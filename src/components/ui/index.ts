@@ -6,7 +6,6 @@ export * from './CircusPlaceholder';
 export * from './EmptyState';
 export * from './ErrorState';
 export * from './LoadingState';
-export * from './MemberDetails';
 export * from './PageHeader';
 export * from './SkillFilters';
 export * from './StudentSkillTracking';

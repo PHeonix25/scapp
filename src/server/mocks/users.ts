@@ -1,0 +1,223 @@
+import { UserRole } from '@prisma/client';
+
+// Define user input type that matches our mock data
+interface UserInput {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  gender: string;
+  username: string;
+  password: string;
+  role: UserRole;
+}
+
+const users: UserInput[] = [
+  // Admin Users
+  {
+    name: 'Alex Johnson',
+    email: 'alex.johnson@example.com',
+    phone: '0412345678',
+    address: '123 Circus St, Sydney',
+    gender: 'Male',
+    username: 'alexj',
+    password: 'securepass123',
+    role: UserRole.ADMIN,
+  },
+  {
+    name: 'Emma Rodriguez',
+    email: 'emma.rodriguez@example.com',
+    phone: '0413456789',
+    address: '789 Admin Ave, Sydney',
+    gender: 'Female',
+    username: 'emmar',
+    password: 'adminpass456',
+    role: UserRole.ADMIN,
+  },
+
+  // Instructor Users (will be expanded with instructor-specific data)
+  {
+    name: 'Sarah Williams',
+    email: 'sarah.w@example.com',
+    phone: '0423456789',
+    address: '456 Acrobat Ave, Melbourne',
+    gender: 'Female',
+    username: 'sarahw',
+    password: 'strongpass456',
+    role: UserRole.INSTRUCTOR,
+  },
+  {
+    name: 'Morgan Reed',
+    email: 'morgan.r@example.com',
+    phone: '0489012345',
+    address: '159 Juggler Rd, Gold Coast',
+    gender: 'Non-binary',
+    username: 'morganr',
+    password: 'instructorpass789',
+    role: UserRole.INSTRUCTOR,
+  },
+  {
+    name: 'Riley Chen',
+    email: 'riley.c@example.com',
+    phone: '0490123456',
+    address: '753 Trapeze Way, Newcastle',
+    gender: 'Female',
+    username: 'rileyc',
+    password: 'teacherpass123',
+    role: UserRole.INSTRUCTOR,
+  },
+  {
+    name: 'Avery Wilson',
+    email: 'avery.w@example.com',
+    phone: '0412345670',
+    address: '456 Aerial Dr, Wollongong',
+    gender: 'Male',
+    username: 'averyw',
+    password: 'coachpass456',
+    role: UserRole.INSTRUCTOR,
+  },
+  {
+    name: 'Jordan Martinez',
+    email: 'jordan.martinez@example.com',
+    phone: '0498765432',
+    address: '321 Silk St, Perth',
+    gender: 'Non-binary',
+    username: 'jordanm',
+    password: 'mentorpass789',
+    role: UserRole.INSTRUCTOR,
+  },
+  {
+    name: 'Casey Thompson',
+    email: 'casey.thompson@example.com',
+    phone: '0487654321',
+    address: '654 Lyra Lane, Adelaide',
+    gender: 'Female',
+    username: 'caseyt',
+    password: 'trainerpass123',
+    role: UserRole.INSTRUCTOR,
+  },
+
+  // Student Users (will be expanded with student-specific data)
+  {
+    name: 'Jamie Smith',
+    email: 'jamie.s@example.com',
+    phone: '0434567890',
+    address: '789 Trapeze Lane, Brisbane',
+    gender: 'Non-binary',
+    username: 'jamies',
+    password: 'safepass789',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Taylor Brown',
+    email: 'taylor.b@example.com',
+    phone: '0456789012',
+    address: '321 Aerial Way, Perth',
+    gender: 'Female',
+    username: 'taylorb',
+    password: 'studentpass123',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Jordan Lee',
+    email: 'jordan.l@example.com',
+    phone: '0467890123',
+    address: '654 Hoop Lane, Adelaide',
+    gender: 'Male',
+    username: 'jordanl',
+    password: 'learnerpass456',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Casey Kim',
+    email: 'casey.k@example.com',
+    phone: '0478901234',
+    address: '987 Balance St, Canberra',
+    gender: 'Non-binary',
+    username: 'caseyk',
+    password: 'pupilpass789',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Alex Parker',
+    email: 'alex.parker@example.com',
+    phone: '0445678901',
+    address: '123 Circus Ave, Darwin',
+    gender: 'Male',
+    username: 'alexp',
+    password: 'studentpass321',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Sam Davis',
+    email: 'sam.davis@example.com',
+    phone: '0456789013',
+    address: '456 Acrobat St, Hobart',
+    gender: 'Female',
+    username: 'samd',
+    password: 'learnerpass654',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Riley Johnson',
+    email: 'riley.johnson@example.com',
+    phone: '0467890124',
+    address: '789 Aerial Rd, Cairns',
+    gender: 'Non-binary',
+    username: 'rileyj',
+    password: 'studentpass987',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Morgan White',
+    email: 'morgan.white@example.com',
+    phone: '0478901235',
+    address: '321 Silk Ave, Townsville',
+    gender: 'Female',
+    username: 'morganw',
+    password: 'pupilpass147',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Avery Garcia',
+    email: 'avery.garcia@example.com',
+    phone: '0489012346',
+    address: '654 Trapeze Dr, Geelong',
+    gender: 'Male',
+    username: 'averyg',
+    password: 'learnerpass258',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Taylor Wilson',
+    email: 'taylor.wilson@example.com',
+    phone: '0490123457',
+    address: '987 Lyra St, Ballarat',
+    gender: 'Non-binary',
+    username: 'taylorw',
+    password: 'studentpass369',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Jordan Brown',
+    email: 'jordan.brown@example.com',
+    phone: '0412345681',
+    address: '159 Hammock Lane, Bendigo',
+    gender: 'Female',
+    username: 'jordanb',
+    password: 'pupilpass741',
+    role: UserRole.STUDENT,
+  },
+  {
+    name: 'Casey Martinez',
+    email: 'casey.martinez@example.com',
+    phone: '0423456792',
+    address: '753 Corde St, Launceston',
+    gender: 'Male',
+    username: 'caseym',
+    password: 'learnerpass852',
+    role: UserRole.STUDENT,
+  },
+];
+
+export { users };

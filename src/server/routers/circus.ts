@@ -6,18 +6,19 @@ import {
   type Skill,
   type User,
 } from '@prisma/client';
-import type { JsonValue } from '@prisma/client/runtime/library';
 import { z } from 'zod';
 
 import type {
   ApparatusLevel,
   InstructorUser,
   SkillProgressStatus,
+  SkillWithProgress,
   StudentUser,
 } from '@/types';
 
 import { prisma } from '../db';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { JsonValue } from '@prisma/client/runtime/client';
 
 // Helper function to get week of year from date
 function getWeekOfYear(date: Date): number {
@@ -402,7 +403,7 @@ export const circusRouter = createTRPCRouter({
         progressReason: skill.progress[0]?.reason ?? null,
         assessedBy: skill.progress[0]?.assessedBy ?? null,
         assessedAt: skill.progress[0]?.assessedAt ?? null,
-      }));
+      }) as SkillWithProgress);
     }),
 
   updateStudentSkillProgress: publicProcedure

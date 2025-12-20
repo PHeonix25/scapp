@@ -70,7 +70,7 @@ export function StudentSkillTracking({
   const groupedSkills = useMemo(() => {
     const groups: Record<string, SkillWithProgress[]> = {};
 
-    skills.forEach(skill => {
+    skills.forEach((skill: SkillWithProgress) => {
       const key = `${skill.apparatus}-${skill.level}`;
       if (!groups[key]) {
         groups[key] = [];
