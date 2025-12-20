@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#faf8f3] font-sans text-[#2d2d2d]">
-      <main className="mx-auto max-w-5xl px-6 py-20">
+    <div className="container mx-auto min-h-screen">
+      <main className="mx-auto ">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="rainbow-gradient-pastel rounded-full p-3 text-2xl shadow-md">🎪</div>
@@ -17,28 +17,28 @@ export default function Home() {
 
         <section className="mt-12 grid gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <h2 className="text-4xl font-extrabold leading-tight bg-gradient-to-r from-[#ff6b6b] via-[#339af0] to-[#da77f2] bg-clip-text text-transparent">Train like a performer. Grow like a pro.</h2>
+            <h2 className="text-4xl font-extrabold leading-tight bg-linear-to-r from-[#ff6b6b] via-[#339af0] to-[#da77f2] bg-clip-text text-transparent">Train like a monkey. Perform like a pro.</h2>
             <p className="mt-4 max-w-xl text-lg text-[#6b6b6b]">
-              Circus Skills helps you practice everyday abilities — from juggling and public speaking to coding and creativity — with playful habits, step-by-step challenges, and progress tracking.
+              Our Social Circus Skills Tracker helps you practice with playful habits, step-by-step challenges, and progress tracking.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a id="start" href="/app" className="rainbow-gradient-pastel inline-flex items-center gap-2 rounded-full px-5 py-3 text-[#2d2d2d] font-semibold shadow-md hover:shadow-lg transition">Start Free</a>
-              <a href="#how" className="inline-flex items-center gap-2 rounded-full border-2 border-[#ddd] px-5 py-3 text-[#2d2d2d] hover:border-[#999] hover:bg-white/60 transition">See How</a>
+              <a href="#how" className="rainbow-gradient-diagonal inline-flex items-center gap-2 rounded-full border-2 border-[#ddd] px-5 py-3 text-white text-bold hover:border-[#999] hover:bg-white/60 transition">See How</a>
             </div>
           </div>
 
           <div className="rainbow-gradient-diagonal rounded-2xl p-1 shadow-md">
             <div className="rounded-2xl bg-[#faf8f3] p-6">
-              <div className="mb-4 text-sm font-semibold text-[#ff6b6b]">Today's Spotlight</div>
+              <div className="mb-4 text-sm font-semibold text-[#ff6b6b]">Todays Spotlight</div>
               <div className="rounded-lg bg-white p-6 flex items-center gap-4 shadow-sm">
                 <div className="hidden sm:flex items-center justify-center w-32 text-4xl">🤸‍♀️</div>
                 <div>
                   <h3 className="text-xl font-semibold text-[#2d2d2d]">Learn Juggling — 10-minute drills</h3>
                   <p className="mt-2 text-sm text-[#6b6b6b]">Short, focussed sessions you can repeat daily to build coordination and focus.</p>
                   <div className="mt-4 flex gap-2">
-                    <span className="inline-block rounded-full bg-gradient-to-r from-[#ff6b6b] to-[#ff922b] px-3 py-1 text-sm font-medium text-white">Practice</span>
-                    <span className="inline-block rounded-full bg-gradient-to-r from-[#339af0] to-[#0099ff] px-3 py-1 text-sm font-medium text-white">Progress</span>
+                    <span className="inline-block rounded-full bg-linear-to-r from-[#ff6b6b] to-[#ff922b] px-3 py-1 text-sm font-medium text-white">Practice</span>
+                    <span className="inline-block rounded-full bg-linear-to-r from-[#339af0] to-[#0099ff] px-3 py-1 text-sm font-medium text-white">Progress</span>
                   </div>
                 </div>
               </div>
