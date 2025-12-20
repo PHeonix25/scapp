@@ -1,0 +1,188 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client" // enable Prisma ORM without Rust
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  phone      String
+  address    String
+  gender     String
+  username   String      @unique
+  password   String
+  role       UserRole
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  instructor Instructor?
+  student    Student?
+}
+
+model Student {
+  id            String                 @id @default(uuid())
+  clubworxId    String                 @unique
+  userId        String                 @unique
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  classes       ClassEnrollment[]
+  user          User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillProgress StudentSkillProgress[]
+}
+
+model Instructor {
+  id             String   @id @default(uuid())
+  clubworxId     String   @unique
+  userId         String   @unique
+  apparatusLevel Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  classes        Class[]
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Class {
+  id           String            @id @default(uuid())
+  clubworxId   Int               @default(0)
+  name         String
+  type         ClassType
+  instructorId String
+  startDate    DateTime
+  endDate      DateTime
+  apparatus    Apparatus
+  level        Level
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  instructor   Instructor        @relation(fields: [instructorId], references: [id])
+  enrollments  ClassEnrollment[]
+  classPlans   ClassPlan[]
+}
+
+model ClassEnrollment {
+  id         String   @id @default(uuid())
+  classId    String
+  studentId  String
+  enrolledAt DateTime @default(now())
+  class      Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, studentId])
+}
+
+model ClassPlan {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  weekOfYear  Int              @default(1)
+  duration    Int
+  classId     String
+  notes       String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  class       Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
+  skills      ClassPlanSkill[]
+
+  @@index([classId])
+  @@index([date])
+  @@index([weekOfYear])
+}
+
+model ClassPlanSkill {
+  id          String    @id @default(uuid())
+  classPlanId String
+  skillId     String
+  order       Int
+  notes       String?
+  createdAt   DateTime  @default(now())
+  classPlan   ClassPlan @relation(fields: [classPlanId], references: [id], onDelete: Cascade)
+  skill       Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([classPlanId, skillId])
+  @@index([classPlanId])
+  @@index([skillId])
+}
+
+model Skill {
+  id              String                 @id @default(cuid())
+  name            String
+  core            Boolean
+  apparatus       Apparatus
+  level           Level
+  description     String                 @default("")
+  taughtIn        String
+  applicableWeeks Json?
+  notes           String
+  cues            String
+  parentId        String?                @map("parent_id")
+  classPlans      ClassPlanSkill[]
+  parent          Skill?                 @relation("SkillHierarchy", fields: [parentId], references: [id])
+  children        Skill[]                @relation("SkillHierarchy")
+  progress        StudentSkillProgress[]
+  sibling_skills  Skill[]                @relation("SkillSiblings")
+  skill_siblings  Skill[]                @relation("SkillSiblings")
+
+  @@index([parentId])
+}
+
+model StudentSkillProgress {
+  id         String              @id @default(uuid())
+  studentId  String
+  skillId    String
+  status     SkillProgressStatus @default(NOT_ATTEMPTED)
+  notes      String?
+  reason     String?
+  assessedBy String?
+  assessedAt DateTime?
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  skill      Skill               @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  student    Student             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, skillId])
+  @@index([studentId])
+  @@index([skillId])
+}
+
+enum UserRole {
+  ADMIN
+  INSTRUCTOR
+  STUDENT
+}
+
+enum ClassType {
+  ADULT
+  KIDS_TEENS
+  SCHOOL_HOLIDAY_WORKSHOP
+  BIRTHDAY_PARTY
+  PRIVATE_LESSONS
+}
+
+enum Apparatus {
+  SILKS
+  TRAPEZE
+  LYRA
+  HAMMOCK
+  CORDE_LISSE
+}
+
+enum Level {
+  BEGINNER
+  TECH_1
+  TECH_2
+  TECH_3
+  ADVANCED
+  ELITE
+}
+
+enum SkillProgressStatus {
+  NOT_ATTEMPTED
+  ATTEMPTED
+  COMPETENT
+  MASTERED
+  EXCEPTED
+}
