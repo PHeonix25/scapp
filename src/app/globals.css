@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f3;
+  --foreground: #2d2d2d;
 }
 
 @theme inline {
@@ -23,4 +23,28 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Rainbow gradient utility */
+.rainbow-gradient {
+  background: linear-gradient(90deg, #ff0000 0%, #ff7f00 16.66%, #00ff00 50%, #0000ff 66.66%, #4b0082 83.33%, #9400d3 100%);
+}
+
+.rainbow-gradient-text {
+  background: linear-gradient(90deg, #ff0000 0%, #ff7f00 16.66%, #00ff00 50%, #0000ff 66.66%, #4b0082 83.33%, #9400d3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.rainbow-gradient-diagonal {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff922b 20%, #ffd43b 40%, #51cf66 60%, #339af0 80%, #da77f2 100%);
+}
+
+.soft-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.rainbow-gradient-pastel {
+  background: linear-gradient(90deg, #ffc5c5 0%, #ffe5c5 20%, #ffffc5 40%, #c5ffc5 60%, #c5e5ff 80%, #e5c5ff 100%);
 }
