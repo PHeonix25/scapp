@@ -29,16 +29,8 @@ export function ThemeProvider({
   children,
   defaultTheme = 'system',
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [theme, setTheme] = useState<Theme>(() => defaultTheme); // Default to system theme
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
-
-  // Initialize theme from localStorage on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-      setTheme(savedTheme);
-    }
-  }, []);
 
   // Update resolved theme when theme changes or system preference changes
   useEffect(() => {
