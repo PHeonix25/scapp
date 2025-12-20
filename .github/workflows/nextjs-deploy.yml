@@ -47,7 +47,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Run linting
+      - name: Generate Prisma client
+        run: pnpm prisma generate
+
+      - name: Run linter
+        run: pnpm lint
+
       # Run tests
 
   # Package job
@@ -86,9 +91,17 @@ jobs:
         with:
           run_install: |
             - args: [--frozen-lockfile]
+      
+      - name: Generate Prisma client
+        run: pnpm prisma generate
 
       - name: Build with Next.js
         run: pnpm next build
+      
+      - name: Run database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: pnpm prisma migrate deploy
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
