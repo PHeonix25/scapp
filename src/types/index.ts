@@ -14,16 +14,8 @@ import type {
 
 import type { ClubworxMember } from '@/lib/clubworx/types';
 
-import { prisma } from '../server/db';
-
 // Re-export all Prisma types
 export * from '@prisma/client';
-
-// Export the Prisma client instance
-export { prisma };
-
-// Define the Prisma client type
-export type PrismaClientType = PrismaClient;
 
 // Helper type for classes with relations
 export type ClassWithRelations = Class & {
