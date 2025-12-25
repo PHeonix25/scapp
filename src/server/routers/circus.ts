@@ -1,24 +1,20 @@
-import {
-  Apparatus,
-  ClassType,
-  Level,
-  UserRole,
-  type Skill,
-  type User,
-} from '@prisma/client';
+
 import { z } from 'zod';
+
 
 import type {
   ApparatusLevel,
   InstructorUser,
-  SkillProgressStatus,
   SkillWithProgress,
   StudentUser,
 } from '@/types';
 
+import type { SkillProgressStatus } from '@/generated/prisma';
+
 import { prisma } from '../db';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
-import { JsonValue } from '@prisma/client/runtime/client';
+import { Apparatus, ClassType, Level, Skill, User, UserRole } from '@/generated/prisma';
+import { JsonValue } from '@/generated/prisma/runtime/client';
 
 // Helper function to get week of year from date
 function getWeekOfYear(date: Date): number {

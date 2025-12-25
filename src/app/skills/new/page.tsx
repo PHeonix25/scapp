@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Apparatus, Level } from '@/types';
+import { Apparatus, Level } from '@/generated/prisma';
 
 export default function NewSkillPage() {
   const [formData, setFormData] = useState({

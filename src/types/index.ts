@@ -9,13 +9,9 @@ import type {
   Skill as PrismaSkill,
   Student,
   User,
-} from '@prisma/client';
+} from '@/generated/prisma';
 
 import type { ClubworxMember } from '@/lib/clubworx/types';
-
-
-// Re-export all Prisma types
-export * from '@prisma/client';
 
 // Helper type for classes with relations
 export type ClassWithRelations = Class & {

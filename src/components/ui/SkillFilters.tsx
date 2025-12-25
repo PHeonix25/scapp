@@ -1,7 +1,7 @@
 'use client';
 
 import { Search as SearchIconSolid } from '@/components/ui/lucide-icons';
-import { Apparatus, Level } from '@/types';
+import { Apparatus, Level } from '@/generated/prisma';
 
 interface SkillFiltersProps {
   searchTerm: string;

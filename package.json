@@ -2,7 +2,7 @@
   "name": "social-circus-skills-tracker",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
@@ -14,12 +14,12 @@
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@tanstack/react-query": "^5.90.12",
-    "@trpc/client": "^11.8.0",
-    "@trpc/react-query": "^11.8.0",
-    "@trpc/server": "^11.8.0",
+    "@trpc/client": "^11.8.1",
+    "@trpc/react-query": "^11.8.1",
+    "@trpc/server": "^11.8.1",
     "axios": "^1.13.2",
     "lucide-react": "^0.562.0",
-    "next": "16.1.0",
+    "next": "16.1.1",
     "prisma": "^7.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -27,16 +27,16 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.18",
     "@tanstack/react-query-devtools": "^5.91.1",
-    "@types/node": "^25",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "bcryptjs": "^3.0.3",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "eslint": "^9.39.2",
+    "eslint-config-next": "16.1.1",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
   }
 }

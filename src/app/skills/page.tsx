@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { PageHeader, SkillFilters } from '@/components/ui';
 import { ArrowUpDown as SortUpDownIcon } from '@/components/ui/lucide-icons';
-import { Apparatus, Level } from '@/types';
+import { Apparatus, Level } from '@/generated/prisma';
 import { trpc } from '@/utils/trpc';
 
 type SortDirection = 'asc' | 'desc' | null;

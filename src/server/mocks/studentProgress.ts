@@ -1,4 +1,4 @@
-import { SkillProgressStatus } from '@prisma/client';
+import { SkillProgressStatus } from '@/generated/prisma';
 
 interface StudentProgressInput {
   studentClubworxId: string;

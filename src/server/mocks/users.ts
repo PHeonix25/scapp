@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { UserRole } from '@/generated/prisma';
 
 // Define user input type that matches our mock data
 interface UserInput {

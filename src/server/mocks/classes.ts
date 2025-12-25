@@ -1,4 +1,4 @@
-import { Apparatus, ClassType, Level } from '@prisma/client';
+import { Apparatus, ClassType, Level } from '@/generated/prisma';
 
 interface ClassInput {
   name: string;

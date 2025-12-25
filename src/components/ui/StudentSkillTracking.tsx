@@ -6,8 +6,8 @@ import {
   Apparatus,
   Level,
   type SkillProgressStatus,
-  type SkillWithProgress,
-} from '@/types';
+} from '@/generated/prisma';
+import type { SkillWithProgress } from '@/types';
 import { trpc } from '@/utils/trpc';
 
 interface StudentSkillTrackingProps {

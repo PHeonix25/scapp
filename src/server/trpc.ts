@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@/generated/prisma';
 import { TRPCError, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import { prisma } from './db';

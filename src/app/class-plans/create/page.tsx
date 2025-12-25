@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import type { Apparatus, Level } from '@prisma/client';
+import type { Apparatus, Level } from '@/generated/prisma';
 
 import { trpc } from '@/utils/trpc';
 
