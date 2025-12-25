@@ -6,7 +6,7 @@ import {
   Apparatus,
   Level,
   type SkillProgressStatus,
-} from '@/generated/prisma';
+} from '@/types';
 import type { SkillWithProgress } from '@/types';
 import { trpc } from '@/utils/trpc';
 

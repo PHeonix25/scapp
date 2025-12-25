@@ -7,13 +7,14 @@ import type {
   InstructorUser,
   SkillWithProgress,
   StudentUser,
+  User,
 } from '@/types';
+import {Apparatus, ClassType, Level,  UserRole} from '@/types';
 
-import type { SkillProgressStatus } from '@/generated/prisma';
+import type { Skill as PrismaSkill, SkillProgressStatus } from '@/generated/prisma';
 
 import { prisma } from '../db';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
-import { Apparatus, ClassType, Level, Skill, User, UserRole } from '@/generated/prisma';
 import { JsonValue } from '@/generated/prisma/runtime/client';
 
 // Helper function to get week of year from date
@@ -356,7 +357,7 @@ export const circusRouter = createTRPCRouter({
       });
     }),
 
-  getSkills: publicProcedure.query(async (): Promise<Skill[] | null> => {
+  getSkills: publicProcedure.query(async (): Promise<PrismaSkill[] | null> => {
     return await prisma.skill.findMany({
       orderBy: {
         name: 'asc',

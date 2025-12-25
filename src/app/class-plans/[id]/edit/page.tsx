@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
-import type { Apparatus, Level } from '@/generated/prisma';
+import type { Apparatus, Level } from '@/types';
 
 import { trpc } from '@/utils/trpc';
 
