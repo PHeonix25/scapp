@@ -6,13 +6,13 @@ import type {
   ClassPlanSkill,
   Instructor,
   Level,
-  PrismaClient,
   Skill as PrismaSkill,
   Student,
   User,
 } from '@prisma/client';
 
 import type { ClubworxMember } from '@/lib/clubworx/types';
+
 
 // Re-export all Prisma types
 export * from '@prisma/client';
@@ -34,6 +34,7 @@ export type InstructorUser = Omit<Instructor, 'apparatusLevel'> &
 
 // Helper type for all Clubworx members
 export type ClubworxUser = ClubworxMember & User;
+
 
 // Helper type for class plans with relations
 export type ClassPlanWithRelations = ClassPlan & {

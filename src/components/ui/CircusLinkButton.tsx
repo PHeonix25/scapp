@@ -24,7 +24,7 @@ export function CircusLinkButton({
   return (
     <Link
       href={link}
-      className={`inline-flex flex-1 rounded-xl bg-gradient-to-tr from-pink-300 to-blue-300 p-0.5 shadow text-foreground ${fullWidth ? 'w-full' : ''} ${className}`}
+      className={`inline-flex flex-1 rounded-xl bg-linear-to-tr from-pink-300 to-blue-300 p-0.5 shadow text-foreground ${fullWidth ? 'w-full' : ''} ${className}`}
     >
       <div
         className={`bg-card rounded-xl text-center flex-1 flex items-center justify-center ${sizeClasses[size]} ${fullWidth ? 'w-full' : ''}`}

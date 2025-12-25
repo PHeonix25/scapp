@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { CircusButton, CircusCard, LoadingState } from '@/components/ui';
 import { CheckCircle2, AlertCircle, Clock } from '@/components/ui/lucide-icons';
-import { get } from 'node:http';
 
 type HealthCheckResponse = {
   status: 'healthy' | 'unhealthy';

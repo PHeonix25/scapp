@@ -79,7 +79,7 @@ export function TableCell({
 }: TableCellProps) {
   return (
     <td
-      className={`sm:table-cell block px-4 py-3 sm:py-4 text-sm text-foreground break-words ${onClick ? 'cursor-pointer' : ''} ${className}`}
+      className={`sm:table-cell block px-4 py-3 sm:py-4 text-sm text-foreground wrap-break-word ${onClick ? 'cursor-pointer' : ''} ${className}`}
       colSpan={colSpan}
       onClick={onClick}
     >
