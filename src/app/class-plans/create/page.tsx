@@ -8,6 +8,7 @@ import type { Apparatus, Level } from '@prisma/client';
 
 import { trpc } from '@/utils/trpc';
 
+
 export default function CreateClassPlanPage() {
   const router = useRouter();
   const searchParams = useSearchParams();

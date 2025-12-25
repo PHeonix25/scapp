@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { StudentSkillTracking } from '@/components/ui/StudentSkillTracking';
 import { trpcServer } from '@/server/trpc-server';
+import { ClubworxMember } from '@/lib/clubworx/types';
 
 interface PageProps {
   params: Promise<{
@@ -23,7 +24,7 @@ export default async function MemberPage({ params }: PageProps) {
     });
 
     // Extract the first member from the search results
-    const member = searchResponse.payload?.[0];
+    const member = searchResponse.payload?.[0] as ClubworxMember | undefined;
     // console.info('👨‍🎓 Member Info', member);
     if (member) {
       return (

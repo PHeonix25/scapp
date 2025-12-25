@@ -61,7 +61,7 @@ export default function Page() {
                   <TableHeadCell>Name</TableHeadCell>
                   <TableHeadCell>Email</TableHeadCell>
                   <TableHeadCell>Phone</TableHeadCell>
-                  <TableHeadCell>Clubworx ID</TableHeadCell>
+                  <TableHeadCell>GymMasterId</TableHeadCell>
                   <TableHeadCell>Actions</TableHeadCell>
                 </TableRow>
               </TableHeader>
@@ -101,7 +101,7 @@ export default function Page() {
                     <TableCell>
                       <Link href={`/members/${student.id}`}>
                         <div className='sm:hidden text-xs text-muted-foreground mb-0.5'>
-                          Clubworx ID
+                          GymMaster ID
                         </div>
                         <div className='text-accent-foreground'>
                           {student.clubworxId || '-'}
