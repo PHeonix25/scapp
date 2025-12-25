@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/server/db';
 import { gymMasterClient } from '@/lib/gymmaster/client';
 
+// Allow static HTML export to include this route's output during build.
+// For `output: "export"` builds, Next requires either `dynamic = 'force-static'`
+// or an explicit `revalidate` to be configured. The health route performs
+// checks at build-time when exporting static HTML, so force-static is used
+// to satisfy the exporter.
+export const dynamic = 'force-static';
 export const runtime = 'nodejs';
 
 async function checkDatabaseHealth(): Promise<{
