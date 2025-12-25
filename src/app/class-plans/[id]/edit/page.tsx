@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useParams, useRouter } from 'next/navigation';
 
@@ -13,13 +13,6 @@ export default function EditClassPlanPage() {
   const params = useParams();
   const classPlanId = params.id as string;
 
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [skillFilters, setSkillFilters] = useState({
-    apparatus: undefined as Apparatus | undefined,
-    level: undefined as Level | undefined,
-  });
-  const [weekNumber, setWeekNumber] = useState<number>(1);
-
   const { data: classPlan, isLoading: planLoading } =
     trpc.circus.getClassPlanById.useQuery({
       classPlanId,
@@ -28,6 +21,28 @@ export default function EditClassPlanPage() {
 
   // Get class info from the loaded class plan
   const selectedClass = classPlan?.class;
+
+  // Derive initial skills and week from class plan
+  const initialSkills = useMemo(() => {
+    return classPlan?.skills.map(s => s.skillId) ?? [];
+  }, [classPlan]);
+
+  const initialWeekNumber = useMemo(() => {
+    return classPlan?.weekOfYear ?? 1;
+  }, [classPlan]);
+
+  // User selections (can be modified from initial values)
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [skillFilters, setSkillFilters] = useState({
+    apparatus: undefined as Apparatus | undefined,
+    level: undefined as Level | undefined,
+  });
+  const [weekNumber, setWeekNumber] = useState<number>(1);
+
+  // Use initial values if user hasn't modified them yet
+  const displaySkills = selectedSkills.length === 0 ? initialSkills : selectedSkills;
+  const displayWeekNumber =
+    weekNumber === 1 && initialWeekNumber !== 1 ? initialWeekNumber : weekNumber;
 
   const { data: skills } = trpc.circus.getSkillsForClassPlan.useQuery({
     apparatus: skillFilters.apparatus ?? selectedClass?.apparatus,
@@ -39,7 +54,7 @@ export default function EditClassPlanPage() {
   const { data: suggestedSkillsData } =
     trpc.circus.getSuggestedSkillsForWeek.useQuery(
       {
-        weekOfYear: weekNumber,
+        weekOfYear: displayWeekNumber,
         apparatus: selectedClass?.apparatus,
         level: skillFilters.level,
       },
@@ -57,25 +72,17 @@ export default function EditClassPlanPage() {
     },
   });
 
-  // Populate form when class plan data loads
-  useEffect(() => {
-    if (classPlan) {
-      setSelectedSkills(classPlan.skills.map(s => s.skillId));
-      setWeekNumber(classPlan.weekOfYear ?? 1);
-    }
-  }, [classPlan]);
-
   // Generate title based on class apparatus and level
   const generateTitle = () => {
     if (!selectedClass) return '';
 
-    return `${selectedClass.apparatus.replace('_', ' ')} - ${selectedClass.level.replace('_', ' ')} - Week ${weekNumber}`;
+    return `${selectedClass.apparatus.replace('_', ' ')} - ${selectedClass.level.replace('_', ' ')} - Week ${displayWeekNumber}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (selectedSkills.length === 0) {
+    if (displaySkills.length === 0) {
       window.alert('Please select at least one skill');
       return;
     }
@@ -86,14 +93,14 @@ export default function EditClassPlanPage() {
     const currentDate = new Date();
     const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
     const weekStart = new Date(
-      startOfYear.getTime() + (weekNumber - 1) * 7 * 24 * 60 * 60 * 1000
+      startOfYear.getTime() + (displayWeekNumber - 1) * 7 * 24 * 60 * 60 * 1000
     );
 
     await updateClassPlan.mutateAsync({
       classPlanId,
       title,
       date: weekStart.toISOString(),
-      skillIds: selectedSkills,
+      skillIds: displaySkills,
     });
   };
 
@@ -186,7 +193,7 @@ export default function EditClassPlanPage() {
               <div className='flex justify-between items-center mb-4'>
                 <h2 className='text-xl font-semibold text-green-800'>
                   Suggested {selectedClass?.apparatus.replace('_', ' ')} Skills
-                  for Week {weekNumber}
+                  for Week {displayWeekNumber}
                 </h2>
                 <button
                   type='button'
@@ -201,7 +208,7 @@ export default function EditClassPlanPage() {
                   <div
                     key={skill.id}
                     className={`p-3 rounded border cursor-pointer transition-colors ${
-                      selectedSkills.includes(skill.id)
+                      displaySkills.includes(skill.id)
                         ? 'bg-green-200 border-green-400'
                         : 'bg-white border-green-300 hover:bg-green-100'
                     }`}
@@ -307,7 +314,7 @@ export default function EditClassPlanPage() {
               {(() => {
                 // Combine filtered skills with selected skills to ensure selected skills are always visible
                 const filteredSkills = skills ?? [];
-                const selectedSkillObjects = selectedSkills
+                const selectedSkillObjects = displaySkills
                   .map(id => allSkills?.find(skill => skill.id === id))
                   .filter(Boolean) as typeof allSkills;
 
@@ -318,19 +325,19 @@ export default function EditClassPlanPage() {
                     skillsMap.set(skill.id, skill);
                   }
                 );
-                const displaySkills = Array.from(skillsMap.values());
+                const skillsList = Array.from(skillsMap.values());
 
-                return displaySkills.length === 0 ? (
+                return skillsList.length === 0 ? (
                   <p className='text-gray-500'>
                     No skills found with current filters
                   </p>
                 ) : (
                   <div className='space-y-2'>
-                    {displaySkills.map(skill => {
+                    {skillsList.map(skill => {
                       const isSuggested = suggestedSkillsData?.some(
                         s => s.id === skill.id
                       );
-                      const isSelected = selectedSkills.includes(skill.id);
+                      const isSelected = displaySkills.includes(skill.id);
                       const matchesFilter = filteredSkills.some(
                         s => s.id === skill.id
                       );
@@ -385,13 +392,13 @@ export default function EditClassPlanPage() {
               })()}
             </div>
 
-            {selectedSkills.length > 0 && (
+            {displaySkills.length > 0 && (
               <div className='mt-4'>
                 <p className='text-sm font-medium text-gray-700 mb-2'>
-                  Selected Skills ({selectedSkills.length}):
+                  Selected Skills ({displaySkills.length}):
                 </p>
                 <div className='flex flex-wrap gap-2'>
-                  {selectedSkills.map(skillId => {
+                  {displaySkills.map(skillId => {
                     const skill = allSkills?.find(s => s.id === skillId);
                     return skill ? (
                       <span

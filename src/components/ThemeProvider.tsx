@@ -40,9 +40,9 @@ export function ThemeProvider({
           .matches
           ? 'dark'
           : 'light';
-        setResolvedTheme(systemTheme);
+        setResolvedTheme(prev => (prev === systemTheme ? prev : systemTheme));
       } else {
-        setResolvedTheme(theme);
+        setResolvedTheme(prev => (prev === theme ? prev : theme));
       }
     };
 

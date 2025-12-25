@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -14,27 +14,16 @@ export default function CreateClassPlanPage() {
   const preselectedClassId = searchParams.get('classId');
   const preselectedSkillId = searchParams.get('skillId');
 
+  // Initialize with preselected values from URL params
   const [classId, setClassId] = useState(preselectedClassId ?? '');
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(
+    preselectedSkillId ? [preselectedSkillId] : []
+  );
   const [skillFilters, setSkillFilters] = useState({
     apparatus: undefined as Apparatus | undefined,
     level: undefined as Level | undefined,
   });
   const [weekNumber, setWeekNumber] = useState<number>(1);
-
-  // Update classId if preselected class changes
-  useEffect(() => {
-    if (preselectedClassId && !classId) {
-      setClassId(preselectedClassId);
-    }
-  }, [preselectedClassId, classId]);
-
-  // Update selectedSkills if preselected skill changes
-  useEffect(() => {
-    if (preselectedSkillId && !selectedSkills.includes(preselectedSkillId)) {
-      setSelectedSkills(prev => [...prev, preselectedSkillId]);
-    }
-  }, [preselectedSkillId, selectedSkills]);
 
   const { data: classes } = trpc.circus.getClasses.useQuery();
   const { data: enums } = trpc.circus.getEnums.useQuery();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -12,10 +12,28 @@ export default function EditSkillWeeksPage() {
   const params = useParams();
   const skillId = params.id as string;
 
-  const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
-
   const { data: skills } = trpc.circus.getSkills.useQuery();
   const skill = skills?.find(s => s.id === skillId);
+
+  // Derive initial selected weeks from skill data
+  const initialSelectedWeeks = useMemo(() => {
+    if (!skill) return [];
+    try {
+      const applicableWeeks = Array.isArray(skill.applicableWeeks)
+        ? skill.applicableWeeks
+        : JSON.parse(skill.applicableWeeks as string);
+      return Array.isArray(applicableWeeks) ? applicableWeeks : [];
+    } catch (error) {
+      console.error('Error parsing applicable weeks:', error);
+      return [];
+    }
+  }, [skill]);
+
+  // User selections (starts empty, can be modified)
+  const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
+
+  // Use initial weeks if user hasn't modified them yet
+  const displayWeeks = selectedWeeks.length > 0 ? selectedWeeks : initialSelectedWeeks;
 
   const updateSkillWeeks = trpc.circus.updateSkillApplicableWeeks.useMutation({
     onSuccess: () => {
@@ -25,21 +43,6 @@ export default function EditSkillWeeksPage() {
       alert(`Error: ${error.message}`);
     },
   });
-
-  // Load current applicable weeks when skill data is available
-  useEffect(() => {
-    if (skill) {
-      try {
-        const applicableWeeks = Array.isArray(skill.applicableWeeks)
-          ? skill.applicableWeeks
-          : JSON.parse(skill.applicableWeeks as string);
-        setSelectedWeeks(Array.isArray(applicableWeeks) ? applicableWeeks : []);
-      } catch (error) {
-        console.error('Error parsing applicable weeks:', error);
-        setSelectedWeeks([]);
-      }
-    }
-  }, [skill]);
 
   const toggleWeek = (week: number) => {
     setSelectedWeeks(prev =>
@@ -78,7 +81,7 @@ export default function EditSkillWeeksPage() {
     e.preventDefault();
     await updateSkillWeeks.mutateAsync({
       skillId,
-      applicableWeeks: selectedWeeks,
+      applicableWeeks: displayWeeks,
     });
   };
 
@@ -138,7 +141,7 @@ export default function EditSkillWeeksPage() {
           <div className='bg-card shadow-md rounded-lg p-6'>
             <div className='flex justify-between items-center mb-4'>
               <h2 className='text-xl font-semibold text-card-foreground'>
-                Select Weeks ({selectedWeeks.length} selected)
+                Select Weeks ({displayWeeks.length} selected)
               </h2>
               <div className='flex space-x-2'>
                 <button
@@ -205,7 +208,7 @@ export default function EditSkillWeeksPage() {
                   className={`
                     h-10 w-full text-sm font-medium rounded border-2 transition-colors
                     ${
-                      selectedWeeks.includes(week)
+                      displayWeeks.includes(week)
                         ? 'bg-blue-500 text-white border-blue-600'
                         : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                     }
@@ -217,13 +220,13 @@ export default function EditSkillWeeksPage() {
             </div>
 
             {/* Selected Weeks Summary */}
-            {selectedWeeks.length > 0 && (
+            {displayWeeks.length > 0 && (
               <div className='mb-6'>
                 <h3 className='text-sm font-medium text-muted-foreground mb-2'>
                   Selected Weeks:
                 </h3>
                 <div className='flex flex-wrap gap-1'>
-                  {selectedWeeks.map(week => (
+                  {displayWeeks.map(week => (
                     <span
                       key={week}
                       className='bg-primary/10 text-primary text-xs px-2 py-1 rounded flex items-center'

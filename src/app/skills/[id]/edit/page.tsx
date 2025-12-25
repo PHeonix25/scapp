@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -14,6 +14,38 @@ export default function EditSkillPage() {
   const params = useParams();
   const skillId = params.id as string;
 
+  const { data: skills } = trpc.circus.getSkills.useQuery();
+  const { data: enums } = trpc.circus.getEnums.useQuery();
+  const skill = skills?.find(s => s.id === skillId);
+
+  // Note: We'd need to add an updateSkill endpoint to make this functional
+  // For now, this is just the UI structure
+
+  // Derive initial form data from skill
+  const initialFormData = useMemo(() => {
+    if (!skill) {
+      return {
+        name: '',
+        core: false,
+        apparatus: '' as Apparatus | '',
+        level: '' as Level | '',
+        taughtIn: '',
+        notes: '',
+        cues: '',
+      };
+    }
+    return {
+      name: skill.name,
+      core: skill.core,
+      apparatus: skill.apparatus,
+      level: skill.level,
+      taughtIn: skill.taughtIn,
+      notes: skill.notes ?? '',
+      cues: skill.cues ?? '',
+    };
+  }, [skill]);
+
+  // User edits (starts as empty form, gets filled as user edits)
   const [formData, setFormData] = useState({
     name: '',
     core: false,
@@ -24,27 +56,17 @@ export default function EditSkillPage() {
     cues: '',
   });
 
-  const { data: skills } = trpc.circus.getSkills.useQuery();
-  const { data: enums } = trpc.circus.getEnums.useQuery();
-  const skill = skills?.find(s => s.id === skillId);
-
-  // Note: We'd need to add an updateSkill endpoint to make this functional
-  // For now, this is just the UI structure
-
-  // Populate form when skill data loads
-  useEffect(() => {
-    if (skill) {
-      setFormData({
-        name: skill.name,
-        core: skill.core,
-        apparatus: skill.apparatus,
-        level: skill.level,
-        taughtIn: skill.taughtIn,
-        notes: skill.notes ?? '',
-        cues: skill.cues ?? '',
-      });
-    }
-  }, [skill]);
+  // Use derived initial data if form hasn't been modified yet
+  const displayFormData =
+    formData.name === '' &&
+    !formData.core &&
+    formData.apparatus === '' &&
+    formData.level === '' &&
+    formData.taughtIn === '' &&
+    formData.notes === '' &&
+    formData.cues === ''
+      ? initialFormData
+      : formData;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,7 +131,7 @@ export default function EditSkillPage() {
                 <input
                   id='skill-name'
                   type='text'
-                  value={formData.name}
+                  value={displayFormData.name}
                   onChange={e =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -128,7 +150,7 @@ export default function EditSkillPage() {
                   </label>
                   <select
                     id='skill-apparatus'
-                    value={formData.apparatus}
+                    value={displayFormData.apparatus}
                     onChange={e =>
                       setFormData({
                         ...formData,
@@ -157,7 +179,7 @@ export default function EditSkillPage() {
                   </label>
                   <select
                     id='skill-level'
-                    value={formData.level}
+                    value={displayFormData.level}
                     onChange={e =>
                       setFormData({
                         ...formData,
@@ -188,7 +210,7 @@ export default function EditSkillPage() {
                 <input
                   id='skill-taught-in'
                   type='text'
-                  value={formData.taughtIn}
+                  value={displayFormData.taughtIn}
                   onChange={e =>
                     setFormData({ ...formData, taughtIn: e.target.value })
                   }
@@ -201,7 +223,7 @@ export default function EditSkillPage() {
                 <input
                   type='checkbox'
                   id='core'
-                  checked={formData.core}
+                  checked={displayFormData.core}
                   onChange={e =>
                     setFormData({ ...formData, core: e.target.checked })
                   }
@@ -232,7 +254,7 @@ export default function EditSkillPage() {
                 </label>
                 <textarea
                   id='skill-notes'
-                  value={formData.notes}
+                  value={displayFormData.notes}
                   onChange={e =>
                     setFormData({ ...formData, notes: e.target.value })
                   }
@@ -251,7 +273,7 @@ export default function EditSkillPage() {
                 </label>
                 <textarea
                   id='skill-cues'
-                  value={formData.cues}
+                  value={displayFormData.cues}
                   onChange={e =>
                     setFormData({ ...formData, cues: e.target.value })
                   }
