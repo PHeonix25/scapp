@@ -23,8 +23,7 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a id="start" href="/app" className="rainbow-gradient-pastel inline-flex items-center gap-2 rounded-full px-5 py-3 text-[#2d2d2d] font-semibold shadow-md hover:shadow-lg transition">Start Free</a>
-              <a href="#how" className="rainbow-gradient-diagonal inline-flex items-center gap-2 rounded-full border-2 border-[#ddd] px-5 py-3 text-white text-bold hover:border-[#999] hover:bg-white/60 transition">See How</a>
+              <a id="start" href="/app" className="rainbow-gradient-pastel inline-flex items-center gap-2 rounded-full px-5 py-3 text-[#2d2d2d] font-semibold shadow-md hover:shadow-lg transition">Get Started</a>
             </div>
           </div>
 
@@ -34,7 +33,7 @@ export default function Home() {
               <div className="rounded-lg bg-white p-6 flex items-center gap-4 shadow-sm">
                 <div className="hidden sm:flex items-center justify-center w-32 text-4xl">🤸‍♀️</div>
                 <div>
-                  <h3 className="text-xl font-semibold text-[#2d2d2d]">Learn Juggling — 10-minute drills</h3>
+                  <h3 className="text-xl font-semibold text-[#2d2d2d]">Learn to Starfish: 10-minute drills</h3>
                   <p className="mt-2 text-sm text-[#6b6b6b]">Short, focussed sessions you can repeat daily to build coordination and focus.</p>
                   <div className="mt-4 flex gap-2">
                     <span className="inline-block rounded-full bg-linear-to-r from-[#ff6b6b] to-[#ff922b] px-3 py-1 text-sm font-medium text-white">Practice</span>
@@ -80,7 +79,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="border-t border-[#ddd] pt-6 text-sm rainbow-gradient-text text-center">
+        <footer className="pt-6 text-sm rainbow-gradient-text text-center">
           <div>Made with a wink and a top hat — here to help you level up, one playful step at a time.</div>
         </footer>
       </main>
