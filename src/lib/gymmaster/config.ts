@@ -26,7 +26,7 @@ export interface GymMasterEndpoints {
 export interface GymMasterClientConfig {
   baseUrl: string;
   apiKey?: string;
-  token?: string;
+  company: number | undefined;
   endpoints: GymMasterEndpoints;
   timeout: number;
   defaultPageSize: number;
@@ -34,9 +34,9 @@ export interface GymMasterClientConfig {
 }
 
 const defaultConfig: GymMasterClientConfig = {
-  baseUrl: process.env.GYMMASTER_API_BASE_URL || 'https://www.gymmaster.com/portal/api',
+  baseUrl: process.env.GYMMASTER_API_BASE_URL || 'https://socialcircus.gymmasteronline.com/portal/api',
   apiKey: process.env.GYMMASTER_API_KEY,
-  token: process.env.GYMMASTER_TOKEN,
+  company: process.env.GYMMASTER_COMPANY_ID ? Number(process.env.GYMMASTER_COMPANY_ID) : undefined,
   endpoints: {
     members: '/v1/members',
     memberProfile: '/v1/member/profile',
@@ -61,9 +61,9 @@ const defaultConfig: GymMasterClientConfig = {
   timeout: 10000,
   defaultPageSize: 20,
   requestHeaders: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'User-Agent': 'SocialCircusApp/1.0',
+     //'Content-Type': 'application/json',
+     Accept: 'application/json',
+     'User-Agent': 'SocialCircusApp/1.0',
   },
 };
 

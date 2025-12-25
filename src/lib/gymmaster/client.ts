@@ -1,5 +1,8 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig, type Method } from 'axios';
+import axios, { type AxiosInstance, type AxiosRequestConfig, type Method, type AxiosError } from 'axios';
 import config, { type GymMasterClientConfig } from '@/lib/gymmaster/config';
+
+const debug = process.env.GYMMASTER_DEBUG;
+const GYMMASTER_DEBUG = (debug === '1' || (typeof debug === 'string' && debug.toLowerCase() === 'true'));
 
 import type {
   GymMasterMember,
@@ -54,15 +57,103 @@ export class GymMasterClient {
     path: string,
     options?: { params?: Record<string, unknown>; data?: unknown; axiosConfig?: AxiosRequestConfig }
   ): Promise<T> {
-    const params = { api_key: this._config.apiKey, token: this._config.token, ...(options?.params ?? {}) };
-    const response = await this._axios.request({
-      method,
-      url: path,
-      params,
-      data: options?.data,
-      ...(options?.axiosConfig ?? {}),
-    });
-    return extractResult<T>(response as { data: unknown });
+    const redact = (obj: unknown) => {
+      try {
+        const s = JSON.stringify(obj, (k, v) => {
+          if (k === 'api_key' || k === 'token') return '***REDACTED***';
+          return v;
+        });
+        return JSON.parse(s);
+      } catch {
+        return obj;
+      }
+    };
+
+    try {
+      const params = {
+        api_key: this._config.apiKey,
+        ...(options?.params ?? {}),
+      } as Record<string, unknown>;
+
+      const reqConfig: AxiosRequestConfig = {
+        method,
+        url: path,
+        params,
+        data: options?.data,
+        ...(options?.axiosConfig ?? {}),
+      };
+
+      const fullUri = this._axios.getUri({ url: path, params });
+
+      if (GYMMASTER_DEBUG) console.debug('GymMaster API Request START', {
+        method,
+        fullUri,
+        baseURL: this._axios.defaults.baseURL,
+        headers: redact((reqConfig.headers ?? this._axios.defaults.headers) as unknown),
+        params: redact(params),
+        data: redact(options?.data),
+      });
+
+      const response = await this._axios.request(reqConfig);
+
+      if (GYMMASTER_DEBUG) console.debug('GymMaster API Request SUCCESS', {
+        method,
+        fullUri,
+        status: response.status,
+        statusText: response.statusText,
+        data: response.data,
+        headers: response.headers,
+      });
+
+      return extractResult<T>(response as { data: unknown });
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      const resp = axiosError?.response;
+      const req = (axiosError?.config ?? {}) as AxiosRequestConfig;
+
+      if (GYMMASTER_DEBUG) console.error('GymMaster API Request ERROR', {
+        method,
+        path,
+        baseURL: this._axios.defaults.baseURL,
+        request: {
+          url: req?.url,
+          method: req?.method,
+          headers: redact(req?.headers),
+          params: redact(req?.params),
+          data: redact(req?.data),
+        },
+        response: {
+          status: resp?.status,
+          statusText: resp?.statusText,
+          data: resp?.data,
+          headers: resp?.headers,
+        },
+        message: axiosError?.message,
+      });
+
+      if (resp?.status === 500) {
+        throw new Error('GymMaster API returned a server error (500). Please try again later.');
+      }
+
+      if (resp?.status === 401 || resp?.status === 403) {
+        throw new Error('GymMaster API authentication failed. Please check your credentials.');
+      }
+
+      if (resp?.status === 404) {
+        throw new Error('GymMaster API resource not found (404).');
+      }
+
+      if (axiosError?.code === 'ECONNABORTED') {
+        throw new Error('GymMaster API request timed out. Please try again.');
+      }
+
+      if (axiosError?.message?.includes('Network Error')) {
+        throw new Error('Unable to connect to GymMaster API. Please check your internet connection.');
+      }
+
+      const detail = resp?.data && typeof resp.data === 'object' ? JSON.stringify(resp.data).slice(0, 200) : resp?.data;
+      throw new Error(`GymMaster API error: ${resp?.status || ''} ${resp?.statusText || ''} ${detail || axiosError?.message || 'Unknown error'}`);
+    }
   }
 
   async getMembers(when?: string, companyid?: number): Promise<GymMasterMember[]> {
@@ -100,7 +191,7 @@ export class GymMasterClient {
 
   async getV2Classes(week?: string, token?: string): Promise<GymMasterClass[]> {
     return this.request<GymMasterClass[]>('GET', this._config.endpoints.v2Classes, {
-      params: { week, token: token ?? this._config.token },
+      params: { week, token: token ?? null },
     });
   }
 

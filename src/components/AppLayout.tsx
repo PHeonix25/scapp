@@ -10,6 +10,7 @@ import {
   X as XIcon,
 } from '@/components/ui/lucide-icons';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { AdminIcon } from './ui/AdminIcon';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -71,6 +72,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </ErrorBoundary>
             </div>
             <div className='flex items-center'>
+              <AdminIcon />
               <ThemeToggle />
               <button
                 type='button'
