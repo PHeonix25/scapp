@@ -100,7 +100,7 @@ jobs:
         run: pnpm prisma generate
 
       - name: Build with Next.js
-        run: pnpm next build
+        run: pnpm next build --webpack
       
       - name: Run database migrations
         env:
