@@ -4,15 +4,18 @@
   "private": true,
   "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6",
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build",
-    "start": "next start",
+    "dev": "cross-env NODE_ENV=development next dev --webpack",
+    "build": "cross-env NODE_ENV=production pnpm db:generate && cross-env NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start",
     "lint": "eslint",
-    "format": "eslint --fix ."
+    "format": "eslint --fix .",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "@prisma/client-runtime-utils": "^7.2.0",
     "@tanstack/react-query": "^5.90.16",
     "@trpc/client": "^11.8.1",
     "@trpc/react-query": "^11.8.1",
@@ -34,6 +37,7 @@
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "bcryptjs": "^3.0.3",
+    "cross-env": "^7.0.3",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4.1.18",
