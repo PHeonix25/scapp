@@ -11,11 +11,11 @@ import type {
 } from '@/types';
 import {Apparatus, ClassType, Level,  UserRole} from '@/types';
 
-import type { Skill as PrismaSkill, SkillProgressStatus } from '@/generated/prisma';
+import type { Skill as PrismaSkill, SkillProgressStatus } from '@/generated/prisma/client';
+import type { JsonValue } from '@prisma/client/runtime/client';
 
 import { prisma } from '../db';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
-import { JsonValue } from '@/generated/prisma/runtime/client';
 
 // Helper function to get week of year from date
 function getWeekOfYear(date: Date): number {

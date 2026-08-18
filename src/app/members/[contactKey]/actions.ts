@@ -1,6 +1,6 @@
 'use server';
 
-import { UserRole, type User } from '@/generated/prisma';
+import { UserRole, type User } from '@/generated/prisma/client';
 
 import type { ClubworxMember } from '@/lib/clubworx/types';
 import { trpcServer } from '@/server/trpc-server';
