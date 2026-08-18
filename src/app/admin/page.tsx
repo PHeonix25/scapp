@@ -44,10 +44,15 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    fetchHealth();
-    if (refreshInterval === 0) return; // Disabled
+    const initialFetch = setTimeout(fetchHealth, 0);
+    if (refreshInterval === 0) {
+      return () => clearTimeout(initialFetch);
+    }
     const interval = setInterval(fetchHealth, refreshInterval);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(initialFetch);
+      clearInterval(interval);
+    };
   }, [refreshInterval]);
 
   if (loading && !health) {
